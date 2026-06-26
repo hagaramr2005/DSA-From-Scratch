@@ -1,4 +1,4 @@
-# 🧠 Space Complexity
+# 03 Space Complexity
 
 > *"An algorithm must be seen to be believed."* — Donald Knuth
 
