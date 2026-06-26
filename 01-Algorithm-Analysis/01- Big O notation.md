@@ -1,4 +1,4 @@
-01-Big O Notation
+# 01-Big O Notation
 
 > *"Amateurs measure algorithms in seconds. Professionals measure algorithms in operations. Masters measure algorithms in asymptotic growth."*
 
