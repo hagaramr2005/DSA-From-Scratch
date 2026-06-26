@@ -42,20 +42,19 @@ Why? Because **measuring algorithms in seconds is a trap.**
 
 ```mermaid
 mindmap
-  root((Algorithmic
-  Complexity))
+  root((Algorithmic Complexity))
     Time
       CPU Cycles
       Loop Iterations
       Function Calls
     Space
       RAM Allocation
-      Call Stack (Recursion)
+      Call Stack Recursion
       Heap Growth
     Bounds
-      Upper (Big O)
-      Lower (Big Omega)
-      Tight (Big Theta)
+      Upper Big O
+      Lower Big Omega
+      Tight Big Theta
 ```
 
 ---
@@ -161,13 +160,13 @@ journey
     title The Lifecycle of Algorithm Optimization
     section Prototyping
       Write brute force logic: 5: Developer
-      It runs in O(n²): 3: System
+      Runs in quadratic time: 3: System
     section Profiling
       Data scales 100x: 2: System
-      CPU spikes to 100%: 1: Server
+      CPU spikes to 100 percent: 1: Server
     section Refactoring
       Implement Hash Map: 4: Developer
-      Achieve O(n) Time: 6: System
+      Achieve linear time: 6: System
       Memory usage increases: 3: RAM
 ```
 
@@ -178,8 +177,21 @@ journey
 Understanding the difference between `O(n)` and `O(n²)` is the difference between a system that scales gracefully and one that crashes under load.
 
 ```
-<img width="613" height="586" alt="image" src="https://github.com/user-attachments/assets/b9034a3c-be53-4eed-9b61-c6b11ed077b6" />
-
+Operations
+    │
+    │                                         ▲ O(2ⁿ)
+    │                                        /
+    │                                       /  ▲ O(n²)
+    │                                      /  /
+    │                                     /  /
+    │                               -----/--/---  O(n log n)
+    │                          ----/    /  /
+    │                     ----/        /  /   O(n)
+    │                ----/         ---/
+    │          -----/         ----/
+    │     ----/           ---/            ---- O(log n)
+    │____/___________----/___________----_______ O(1)
+    └──────────────────────────────────────────────► n
 ```
 
 **Key insight:** At `n = 1,000,000`:
@@ -229,7 +241,7 @@ stateDiagram-v2
     Request_Index --> Calculate_Memory_Offset
     Calculate_Memory_Offset --> Fetch_Data
     Fetch_Data --> [*]
-    note right of Calculate_Memory_Offset: Base_Address + (Index × Data_Size) = Instant
+    note right of Calculate_Memory_Offset: Base + Index x Size = Instant
 ```
 
 #### CPU / Memory Behavior
@@ -299,13 +311,13 @@ Step 4 — 1 element:   [ 7 ] ✓ Found
 sequenceDiagram
     participant Main
     participant Array
-    Main->>Array: find(7) in N=8
-    Array-->>Main: middle is 4. Go Right. (N=4)
-    Main->>Array: find(7) in N=4
-    Array-->>Main: middle is 7. Go Left. (N=2)
-    Main->>Array: find(7) in N=2
-    Array-->>Main: middle is 5. Go Right. (N=1)
-    Main->>Array: match found!
+    Main->>Array: find 7 in N=8
+    Array-->>Main: middle is 4, go right, N=4
+    Main->>Array: find 7 in N=4
+    Array-->>Main: middle is 7, go left, N=2
+    Main->>Array: find 7 in N=2
+    Array-->>Main: middle is 5, go right, N=1
+    Main->>Array: match found
 ```
 
 #### Mathematical Foundation
@@ -391,9 +403,9 @@ Reading every page of a book to find a specific sentence.
 
 ```mermaid
 flowchart TD
-    A[Start] --> B{i < N?}
-    B -- Yes --> C["Process arr[i]"]
-    C --> D["i++"]
+    A[Start] --> B{i less than N?}
+    B -- Yes --> C[Process arr at i]
+    C --> D[increment i]
     D --> B
     B -- No --> E[Return Result]
 ```
@@ -479,13 +491,13 @@ quadrantChart
     title Complexity Trade-offs
     x-axis Fast Time --> Slow Time
     y-axis High Memory --> Low Memory
-    quadrant-1 Heavy, Slow
-    quadrant-2 Heavy, Fast
-    quadrant-3 Lean, Fast
-    quadrant-4 Lean, Slow
-    "O(1) Space, O(n²) Time (Bubble Sort)": [0.8, 0.2]
-    "O(n) Space, O(n) Time (Hash Map)": [0.2, 0.8]
-    "O(1) Space, O(n) Time (Two Pointer)": [0.2, 0.2]
+    quadrant-1 Heavy and Slow
+    quadrant-2 Heavy but Fast
+    quadrant-3 Lean and Fast
+    quadrant-4 Lean but Slow
+    Bubble Sort O1-Space On2-Time: [0.8, 0.2]
+    Hash Map On-Space On-Time: [0.2, 0.8]
+    Two Pointer O1-Space On-Time: [0.2, 0.2]
 ```
 
 #### CPU / Memory Behavior
@@ -557,14 +569,14 @@ Senior engineers identify complexity in seconds by mentally parsing code into a 
 ```mermaid
 graph TD
     A[Look at the code] --> B{Are there loops?}
-    B -- No --> C["O(1) — Constant"]
+    B -- No --> C[Constant]
     B -- Yes --> D{Are loops nested?}
     D -- Yes --> E{Are they dependent?}
-    E -- No --> F["O(N × M)"]
-    E -- Yes --> G["O(N²) — Quadratic"]
+    E -- No --> F[O of N times M]
+    E -- Yes --> G[Quadratic]
     D -- No --> H{Does the step double or halve?}
-    H -- Yes --> I["O(log N) — Logarithmic"]
-    H -- No --> J["O(N) — Linear"]
+    H -- Yes --> I[Logarithmic]
+    H -- No --> J[Linear]
 ```
 
 ---
@@ -591,13 +603,12 @@ Every recursive call allocates a new frame on the stack. Max depth determines sp
 ```mermaid
 classDiagram
     class StackMemory {
-      <<OS Memory>>
-      +fib(4) Frame [Variables]
-      +fib(3) Frame [Variables]
-      +fib(2) Frame [Variables]
-      +fib(1) Frame [Variables]
+        fib_4_Frame
+        fib_3_Frame
+        fib_2_Frame
+        fib_1_Frame
     }
-    note for StackMemory "Max Depth determines Space Complexity.\nHere, Space is O(N)."
+    note for StackMemory "Max depth = N\nSpace Complexity = O(N)"
 ```
 
 ---
@@ -694,10 +705,10 @@ Rule 4 — Recursion Costs Memory
 ```mermaid
 timeline
     title The Evolution of Algorithmic Data Sizes
-    1990 : 1 MB Arrays : O(N²) was somewhat acceptable
-    2000 : 1 GB Databases : O(N²) crashes servers. O(N log N) becomes vital.
-    2015 : Big Data / Petabytes : O(N) is too slow. Distributed O(log N) rules.
-    2025 : AI Scale : Hardware optimization + O(1) mathematical approximations.
+    1990 : 1 MB Arrays : Quadratic time was sometimes acceptable
+    2000 : 1 GB Databases : Quadratic crashes servers, linearithmic is vital
+    2015 : Big Data Petabytes : Linear is slow, distributed log N rules
+    2025 : AI Scale : Hardware optimization and constant-time approximations
 ```
 
 ---
@@ -711,7 +722,7 @@ timeline
 │  O(n)        │  Linear scan · BFS/DFS · Single-pass sums            │
 │  O(n log n)  │  Merge Sort · Quick Sort · Heap Sort                 │
 │  O(n²)       │  Nested loops · Bubble Sort · Naive duplicates       │
-│  O(2ⁿ)       │  Recursive subsets · Fibonacci (naive)               │
+│  O(2ⁿ)       │  Recursive subsets · Fibonacci naive                 │
 │  O(n!)       │  All permutations · TSP brute force                  │
 └──────────────┴──────────────────────────────────────────────────────┘
 ```
