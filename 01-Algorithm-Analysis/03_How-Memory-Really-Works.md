@@ -1092,5 +1092,3 @@ It will be something you *understand*.
 *End of Chapter 03*
 
 ---
-
-> **Navigation**: [← Chapter 02: Big-O Notation](02-Big-O-Notation.md) | [Chapter 04: Stack Memory →](04-Stack-Memory.md)
