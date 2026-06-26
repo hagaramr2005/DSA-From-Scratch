@@ -285,8 +285,8 @@ Steps:   1  2  3  4  5  6
 ```mermaid
 flowchart TD
     A[Start] --> B{i < N?}
-    B -- Yes --> C[Process arr[i]]
-    C --> D[i++]
+    B -- Yes --> C["Process arr[i]"]
+    C --> D["i++"]
     D --> B
     B -- No --> E[Return Result]
 
