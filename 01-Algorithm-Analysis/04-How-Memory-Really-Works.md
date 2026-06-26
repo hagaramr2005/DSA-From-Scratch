@@ -1,4 +1,4 @@
-# Chapter 03 — How Memory Really Works
+# 04-How Memory Really Works
 
 > *"To understand a program, you must first understand where it lives."*
 
