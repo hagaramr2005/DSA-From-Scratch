@@ -178,7 +178,7 @@ journey
 Understanding the difference between `O(n)` and `O(n²)` is the difference between a system that scales gracefully and one that crashes under load.
 
 ```
-<img width="613" height="586" alt="image" src="https://github.com/user-attachments/assets/5d9d421c-7b1d-4c3a-a3ab-657a85b422c2" />
+<img width="613" height="586" alt="image" src="https://github.com/user-attachments/assets/b9034a3c-be53-4eed-9b61-c6b11ed077b6" />
 
 ```
 
@@ -557,14 +557,14 @@ Senior engineers identify complexity in seconds by mentally parsing code into a 
 ```mermaid
 graph TD
     A[Look at the code] --> B{Are there loops?}
-    B -- No --> C[O(1) Constant]
+    B -- No --> C["O(1) — Constant"]
     B -- Yes --> D{Are loops nested?}
     D -- Yes --> E{Are they dependent?}
-    E -- No --> F["Outer N × Inner M = O(N × M)"]
-    E -- Yes --> G["Outer N × Inner N-i = O(N²)"]
-    D -- No --> H{Does the step double/halve?}
-    H -- Yes --> I[O(log N)]
-    H -- No --> J[O(N) Linear]
+    E -- No --> F["O(N × M)"]
+    E -- Yes --> G["O(N²) — Quadratic"]
+    D -- No --> H{Does the step double or halve?}
+    H -- Yes --> I["O(log N) — Logarithmic"]
+    H -- No --> J["O(N) — Linear"]
 ```
 
 ---
