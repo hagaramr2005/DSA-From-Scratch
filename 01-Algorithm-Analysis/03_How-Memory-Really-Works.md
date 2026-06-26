@@ -606,7 +606,7 @@ Now we arrive at the first place where most tutorials begin. Notice how differen
 
 ```mermaid
 graph TD
-    subgraph JVM Process Memory
+    subgraph JVMPM["JVM Process Memory"]
         subgraph Heap
             YG["Young Generation\n(Eden + Survivor spaces)"]
             OG["Old Generation\n(Tenured)"]
@@ -619,7 +619,7 @@ graph TD
         end
         MA["Method Area\n(Class data, bytecode,\nstatic fields, constants)"]
     end
-    OS["🖥️ OS Virtual Address Space"] --> JVM Process Memory
+    OS["🖥️ OS Virtual Address Space"] --> JVMPM
 ```
 
 | Region | What it holds | Who manages it |
@@ -1000,20 +1000,20 @@ mindmap
     CPU
       Executes instructions
       Fetch-Decode-Execute cycle
-      Registers (< 1ns, ~bytes)
-      L1 Cache (1ns, KB)
-      L2 Cache (4ns, MB)
-      L3 Cache (10-40ns, MB-GB)
+      Registers less than 1ns, approx bytes
+      L1 Cache 1ns KB
+      L2 Cache 4ns MB
+      L3 Cache 10-40ns MB-GB
     RAM
-      Volatile (lost on power-off)
-      Random access (any byte equally fast)
-      8GB–64GB typical
-      60–100ns access time
+      Volatile lost on power-off
+      Random access any byte equally fast
+      8GB to 64GB typical
+      60 to 100ns access time
       Holds running programs
     Virtual Memory
       Each process sees private address space
-      OS page table maps virtual→physical
-      Demand paging (physical RAM assigned lazily)
+      OS page table maps virtual to physical
+      Demand paging physical RAM assigned lazily
       Swap space extends apparent RAM via disk
     Operating System
       Creates processes
@@ -1025,18 +1025,18 @@ mindmap
       Manages sub-regions of its virtual space
       Garbage Collector manages Heap
     Memory Regions
-      Heap (objects, GC managed)
-      Stack (frames, local vars, per-thread)
-      Method Area (class data, bytecode)
-      PC Register (current instruction pointer)
+      Heap objects GC managed
+      Stack frames local vars per-thread
+      Method Area class data bytecode
+      PC Register current instruction pointer
     Addresses
       Every byte has a unique number
       References ARE addresses
       Pointer dereference follows the address
     Execution
-      Source → Compile → Bytecode → JVM → JIT → CPU
-      main() runs in a thread
-      Stack frames pushed/popped per method call
+      Source to Compile to Bytecode to JVM to JIT to CPU
+      main runs in a thread
+      Stack frames pushed and popped per method call
 ```
 
 ---
