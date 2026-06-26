@@ -228,6 +228,10 @@ The memory that `add`'s frame occupied is instantly reclaimed the moment `add` r
 
 This is also why **recursion has space implications that iteration does not**: each recursive call adds a new frame to the stack. A recursion that is 10,000 levels deep has 10,000 frames on the stack simultaneously.
 
+> 🧠 **Mental Model:** Stack = a pile of cafeteria trays. You can only touch the top one. Add a tray (call a method), remove a tray (return from it). The pile has a height limit — stack too high, and it tips over (`StackOverflowError`).
+
+> 🎯 **Interview Angle:** Whenever an interviewer sees recursion in your solution, they are silently asking "how deep does this go?" If you can answer that without being asked, you have already demonstrated the space-complexity instinct they are testing for.
+
 ---
 
 ## Heap Memory
@@ -278,6 +282,8 @@ public static void fill(int[] arr) {
 Calling `fill(numbers)` does not double the memory usage of the array. Only a small reference is added to the Stack. This is why large arrays and objects can be passed to methods efficiently — but it is also why methods can unexpectedly modify data you did not intend them to change.
 
 The Heap is larger than the Stack and grows dynamically. Objects can be allocated and can reference other objects, forming complex graphs of interconnected data. This flexibility comes with a cost: the Heap requires a garbage collector to reclaim memory from objects that are no longer needed.
+
+> 🧠 **Mental Model:** Heap = a big warehouse with no fixed shelving plan. Anyone holding a claim ticket (a reference) can find their item, no matter where the warehouse staff (the JVM) decided to put it. The Stack, by contrast, is more like a single organized shelf where you only ever touch the top item.
 
 ---
 
@@ -373,6 +379,8 @@ The garbage collector runs periodically, not instantaneously. This means that be
 
 What this means for us: **creating many short-lived objects in a tight loop is not "free" from a memory perspective**, even if each individual object is small. They accumulate in the Heap faster than the GC can collect them. Good algorithm design considers object creation, not just variable declaration.
 
+> 🧠 **Mental Model:** GC = a building superintendent who periodically walks every floor checking which apartments (objects) no longer have a lease (a reference) attached. No lease means the apartment gets cleared for the next tenant. The walk-through is not instant — it happens on its own schedule, which is why "unreachable" and "already freed" are not the same moment.
+
 ---
 
 ## What is Space Complexity?
@@ -403,6 +411,13 @@ Space complexity, like time complexity, is expressed using **Big-O notation**, w
 ---
 
 ## Types of Space Complexity
+
+> 💡 **How to Think (not memorize):** For any new complexity class you meet — in this chapter or any future one — ask three questions in order:
+> 1. **What new structure does the algorithm create** (array, list, map, recursion frame)?
+> 2. **Does its size depend on `n`, on a fixed constant, or on something smaller than `n`** (like `log n`)?
+> 3. **Where does it live** — Stack (recursion) or Heap (`new`)?
+>
+> The Big-O label falls out automatically once you answer these three. You never need to memorize "this pattern = O(n²)" — you derive it every time.
 
 ### O(1) — Constant Space
 
@@ -442,6 +457,8 @@ n = 1000:      [extra: ■]
 n = 1,000,000: [extra: ■]
                          ← always the same, regardless of input
 ```
+
+> ⚖️ **Compare with O(n):** O(1) and O(n) feel similar in code length — both might be "one loop" — but the difference is whether the loop *stores* what it sees (O(n), growing structure) or just *tracks* a running value (O(1), fixed-size variable). Always ask: is this variable replaced each iteration, or appended to?
 
 ---
 
@@ -490,6 +507,8 @@ Stack at deepest point (n = 16):
 │ binarySearch [8,9]   │  ← 4 frames for 16 elements
 └──────────────────────┘
 ```
+
+> ⚖️ **Compare with O(1) and O(n):** O(log n) sits between the two — it grows, but so slowly it is almost invisible in practice (an array of a billion elements only needs ~30 stack frames). The tell-tale sign is **halving**: if each recursive call works on roughly half the previous input, you are in O(log n) territory, not O(n).
 
 ---
 
@@ -541,6 +560,8 @@ n = 16: [■][■][■][■][■][■][■][■][■][■][■][■][■][■][�
          ↑ memory grows linearly with input size
 ```
 
+> ⚖️ **Compare with O(log n) and O(n²):** O(n) is the "one new structure sized like the input" case — the most common space complexity you will encounter. The moment you see a *second* dimension scaling with `n` (a list of lists, a grid), you have jumped to O(n²), not O(n) — that jump is exactly what the next section covers.
+
 ---
 
 ### O(n²) — Quadratic Space
@@ -582,6 +603,8 @@ n = 3:      n = 4:        n = 5:
 ```
 
 Each step adds not just a row and a column — it adds an entirely new row and column of the new size. The growth is explosive.
+
+> ⚖️ **Compare with O(n):** A single `new int[n]` and a single `new int[n][n]` look almost identical in code, but one is linear and the other is quadratic. The question to ask is not "did I write `new`?" but "how many of the array's dimensions are tied to `n`?" One dimension → O(n). Two dimensions → O(n²).
 
 ---
 
@@ -994,6 +1017,16 @@ Work through these problems in order. They are designed to build your intuition 
 
 ---
 
+**Quick Conceptual Check** *(answer in one sentence each — these test recall of definitions, not problem-solving)*
+
+1. What is the difference between total space and auxiliary space?
+2. Why does Stack memory get reclaimed instantly while Heap memory needs a garbage collector?
+3. Why does passing a large array to a method not double its space usage?
+4. Why can a recursive solution have a different space complexity than an iterative solution that produces the same output?
+5. Why is `result = result + word` inside a loop a space (not just time) problem in Java?
+
+---
+
 **Level 1 — Beginner**
 
 **Problem 1.**
@@ -1057,6 +1090,46 @@ Design an algorithm that takes an unsorted array of `n` integers and returns all
 
 **Problem 10 (Open-ended).**
 You are building a cache that stores the last `k` results of an expensive computation. The computation is called with a string key and returns an integer. Design a solution and analyze both its time complexity per lookup and its auxiliary space complexity in terms of `k` and the average key length.
+
+---
+
+**Debugging Challenges** *(each snippet contains a space-complexity misconception — find it and name the actual complexity)*
+
+**Problem 11.**
+```java
+public static int sumArray(int[] arr) {
+    if (arr.length == 0) return 0;
+    int[] rest = new int[arr.length - 1];
+    System.arraycopy(arr, 1, rest, 0, arr.length - 1);
+    return arr[0] + sumArray(rest);
+}
+```
+A developer claims this is O(1) auxiliary space "because it only ever adds two numbers per call." What is the actual auxiliary space complexity, and what did they overlook?
+
+**Problem 12.**
+```java
+public static List<Integer> getEvens(int[] arr) {
+    List<Integer> evens = new ArrayList<>();
+    for (int num : arr) {
+        if (num % 2 == 0) evens.add(num);
+    }
+    return evens;
+}
+```
+A developer claims this is O(1) because "no new array is created, just a list that grows." Is that reasoning correct? Justify your answer.
+
+**Problem 13.**
+```java
+public static boolean hasDuplicate(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = i + 1; j < arr.length; j++) {
+            if (arr[i] == arr[j]) return true;
+        }
+    }
+    return false;
+}
+```
+A developer claims this method is O(n²) auxiliary space "because it has nested loops." Explain why this reasoning is wrong, and state the actual auxiliary space complexity.
 
 ---
 
