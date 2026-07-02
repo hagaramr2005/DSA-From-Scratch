@@ -106,16 +106,16 @@ Arrays don't just have a convenient cost model on paper — they are fast in a w
 
 ```mermaid
 flowchart LR
-    A[Array Access] --> B[Random Access]
-    A --> C[Spatial Locality]
-    A --> D[Temporal Locality]
-    B --> E[Direct address computation<br/>no traversal needed]
-    C --> F[Neighboring elements<br/>load into cache together]
-    D --> G[Recently used elements<br/>likely reused soon]
-    F --> H[Fewer cache misses]
+    A["Array Access"] --> B["Random Access"]
+    A --> C["Spatial Locality"]
+    A --> D["Temporal Locality"]
+    B --> E["Direct address computation<br/>no traversal needed"]
+    C --> F["Neighboring elements<br/>load into cache together"]
+    D --> G["Recently used elements<br/>likely reused soon"]
+    F --> H["Fewer cache misses"]
     G --> H
-    E --> I[O(1) access]
-    H --> J[Fast real-world performance]
+    E --> I["Constant-time access — O(1)"]
+    H --> J["Fast real-world performance"]
     I --> J
 ```
 
